@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
+    <title>DropChat — Real-Time Chat</title>
+    
+    <!-- Vector Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg?v=3.4">
+    <link rel="alternate icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💬</text></svg>">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Cache-busting stylesheet -->
+    <link rel="stylesheet" href="style.css?v=3.4">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Main Chat Surface -->
+        <main class="chat-main">
+            <!-- Header -->
+            <header class="chat-header">
+                <div class="brand-info">
+                    <div class="brand-logo" title="DropChat">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="brand-details">
+                        <h1>DropChat</h1>
+                        <div class="status-badge">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Live</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <!-- Mute / Unmute sound -->
+                    <button class="header-btn icon-btn" id="soundToggleBtn" title="Toggle Audio" aria-label="Audio">
+                        <span class="btn-emoji-icon">🔔</span>
+                    </button>
+
+                    <!-- Theme Switcher with pixel-perfect aligned icon -->
+                    <button class="header-btn" id="themeToggleBtn" title="Switch Theme" aria-label="Theme">
+                        <span class="theme-icon">🎨</span>
+                        <span class="btn-label">Theme</span>
+                    </button>
+
+                    <!-- Persistent Display Name Button -->
+                    <button class="header-btn user-badge-btn" id="changeNameBtn" title="Edit Profile" aria-label="Edit Name">
+                        <span class="btn-avatar" id="headerUserAvatar">🦊</span>
+                        <span class="btn-label" id="headerUserName">Profile</span>
+                        <span class="edit-badge">✏️</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Message Stream -->
+            <section class="messages-container" id="messagesContainer">
+                <div class="message-system">
+                    <span class="sys-icon">🌟</span>
+                    <span>Welcome to DropChat! Send a message, share photos, or drop a voice note.</span>
+                </div>
+            </section>
+
+            <!-- Jump to Bottom Pill -->
+            <button class="scroll-bottom-pill" id="scrollBottomPill" style="display: none;">
+                <span class="pill-icon">↓</span>
+                <span>New Messages</span>
+            </button>
+
+            <!-- Clean Emoji Popover -->
+            <div class="emoji-picker-popover" id="emojiPopover">
+                <div class="emoji-grid">
+                    <!-- Emojis injected by app.js -->
+                </div>
+            </div>
+
+            <!-- Chat Input Footer -->
+            <footer class="chat-footer">
+                <!-- Reply Quoting Banner -->
+                <div class="reply-banner" id="replyBanner">
+                    <div class="reply-banner-content">
+                        <span class="reply-banner-title" id="replyUser">Replying to:</span>
+                        <span class="reply-banner-text" id="replyText">Snippet</span>
+                    </div>
+                    <button class="reply-close-btn" id="replyCloseBtn" title="Cancel reply" aria-label="Cancel">✕</button>
+                </div>
+
+                <!-- Attached File Preview Banner -->
+                <div class="file-preview-banner" id="filePreviewBanner">
+                    <img src="" class="file-preview-thumb" id="filePreviewThumb" alt="Preview">
+                    <span class="file-preview-icon" id="filePreviewIcon">📄</span>
+                    <div class="file-preview-details">
+                        <div class="file-preview-name" id="filePreviewName">filename.ext</div>
+                        <div class="file-preview-size" id="filePreviewSize">0 MB</div>
+                    </div>
+                    <button class="file-cancel-btn" id="fileCancelBtn" title="Remove attachment" aria-label="Remove file">✕</button>
+                </div>
+
+                <!-- Input Controls Row -->
+                <div class="input-row">
+                    <!-- Hidden file input -->
+                    <input type="file" id="fileInput" style="display: none;" accept="image/*,audio/*,.pdf,.zip,.rar,.txt,.docx">
+
+                    <button class="input-tool-btn" id="attachBtn" title="Attach file or photo" aria-label="Attach">
+                        <span class="tool-emoji">📎</span>
+                    </button>
+                    <button class="input-tool-btn" id="emojiBtn" title="Emojis" aria-label="Emoji">
+                        <span class="tool-emoji">😀</span>
+                    </button>
+
+                    <textarea 
+                        id="chatInput" 
+                        class="chat-textarea" 
+                        placeholder="Write a message... (Press Enter to send)" 
+                        rows="1"
+                    ></textarea>
+
+                    <button class="send-btn" id="sendBtn" title="Send Message" aria-label="Send">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Display Name & Avatar Modal -->
+    <div class="modal-overlay" id="nameModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-icon">👋</div>
+                <h2 id="nameModalTitle">Welcome to DropChat</h2>
+                <p>Pick your persona avatar and display name</p>
+            </div>
+
+            <label class="avatar-selection-label">Select Avatar</label>
+            <div class="avatar-grid" id="avatarGrid">
+                <!-- Avatar choices rendered via JS -->
+            </div>
+
+            <div class="form-group">
+                <label for="nameInput">Your Display Name</label>
+                <input type="text" id="nameInput" class="form-input" placeholder="e.g. Alex, Jordan, Neo..." maxlength="25" autocomplete="off" spellcheck="false">
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-primary" id="saveNameBtn">Join Chat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fullscreen Image Lightbox -->
+    <div class="lightbox-overlay" id="lightboxOverlay">
+        <span class="lightbox-close" id="lightboxClose" aria-label="Close image">✕</span>
+        <img src="" class="lightbox-img" id="lightboxImg" alt="Full size preview">
+    </div>
+
+    <!-- Notification Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Cache-busting Application Script -->
+    <script src="app.js?v=3.4"></script>
+</body>
+</html>

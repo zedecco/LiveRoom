@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="dropGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <!-- Background Chat Bubble -->
+  <rect x="6" y="6" width="52" height="42" rx="16" fill="url(#dropGrad)" filter="url(#shadow)" />
+  <!-- Tail -->
+  <path d="M 20 48 L 14 58 L 30 48 Z" fill="#8b5cf6" />
+  <!-- Three glowing chat dots -->
+  <circle cx="23" cy="27" r="4" fill="#ffffff" opacity="0.95" />
+  <circle cx="32" cy="27" r="4" fill="#ffffff" opacity="0.95" />
+  <circle cx="41" cy="27" r="4" fill="#ffffff" opacity="0.95" />
+</svg>
